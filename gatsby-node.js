@@ -1,4 +1,5 @@
 const { getGatsbyImageResolver } = require("gatsby-plugin-image/graphql-utils")
+const path = require(`path`)
 
 const formatAsNodeType = (str) => {
   const base = str.replace("node__", "")
@@ -684,4 +685,26 @@ exports.createSchemaCustomization = async ({ actions }) => {
       body: node__pageField_body @proxy(from: "field_body")
     }
   `)
+}
+
+const blogPostTemplate = require.resolve(`./src/templates/blog-post-base.tsx`)
+exports.createPages = async ({graphql, actions}) => {
+  const {createPage} = actions
+
+  const result = await graphql(`
+    {allNodeBlogPost(sort: {fields: [created]}) {
+      nodes {
+        id
+        path { alias }
+      }
+    }}
+  `)
+
+  result.data.allNodeBlogPost.nodes.forEach(post => {
+    createPage({
+      path: path.join(`/blog/`, post.path.alias),
+      component: blogPostTemplate,
+      context: { id: post.id },
+    })
+  })
 }
