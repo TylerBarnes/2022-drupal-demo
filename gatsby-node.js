@@ -1,3 +1,6 @@
+const {
+  addRemoteFilePolyfillInterface,
+} = require("gatsby-plugin-utils/polyfill-remote-file")
 const { getGatsbyImageResolver } = require("gatsby-plugin-image/graphql-utils")
 const path = require(`path`)
 
@@ -14,7 +17,7 @@ const formatAsNodeType = (str) => {
   return [type, internalType]
 }
 
-exports.createSchemaCustomization = async ({ actions }) => {
+exports.createSchemaCustomization = async ({ actions, schema }) => {
   actions.createFieldExtension({
     name: "blocktype",
     extend(options) {
@@ -137,6 +140,16 @@ exports.createSchemaCustomization = async ({ actions }) => {
       alt: String
       gatsbyImageData: JSON @imagePassthroughArgs
       url: String
+
+      filename: String!
+      filesize: Int!
+      width: Int!
+      height: Int!
+      publicUrl: String!
+      mimeType: String!
+
+      gatsbyImage: JSON
+      resize: RemoteFileResize
     }
 
     interface HomepageHero implements Node & HomepageBlock {
@@ -673,34 +686,51 @@ exports.createSchemaCustomization = async ({ actions }) => {
   `)
 
   // Page types
-  actions.createTypes(/* GraphQL */ `
-    type node__page implements Node & Page @dontInfer {
-      id: ID!
-      slug: String! @proxy(from: "field_slug")
-      title: String
-      description: String @proxy(from: "field_description")
-      image: HomepageImage
-        @link(by: "id", from: "relationships.field_image___NODE")
-      html: String! @proxy(from: "field_body.processed")
-      body: node__pageField_body @proxy(from: "field_body")
-    }
-  `)
+  actions.createTypes([
+    /* GraphQL */ `
+      type node__page implements Node & Page @dontInfer {
+        id: ID!
+        slug: String! @proxy(from: "field_slug")
+        title: String
+        description: String @proxy(from: "field_description")
+        image: HomepageImage
+          @link(by: "id", from: "relationships.field_image___NODE")
+        html: String! @proxy(from: "field_body.processed")
+        body: node__pageField_body @proxy(from: "field_body")
+      }
+    `,
+    addRemoteFilePolyfillInterface(
+      schema.buildObjectType({
+        name: `HomepageImage`,
+        fields: {},
+        interfaces: [`Node`, `RemoteFile`],
+      }),
+      {
+        schema,
+        actions,
+      }
+    ),
+  ])
 }
 
 const blogPostTemplate = require.resolve(`./src/templates/blog-post-base.tsx`)
-exports.createPages = async ({graphql, actions}) => {
-  const {createPage} = actions
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions
 
   const result = await graphql(`
-    {allNodeBlogPost(sort: {fields: [created]}) {
-      nodes {
-        id
-        path { alias }
+    {
+      allNodeBlogPost(sort: { fields: [created] }) {
+        nodes {
+          id
+          path {
+            alias
+          }
+        }
       }
-    }}
+    }
   `)
 
-  result.data.allNodeBlogPost.nodes.forEach(post => {
+  result.data.allNodeBlogPost.nodes.forEach((post) => {
     createPage({
       path: path.join(`/blog/`, post.path.alias),
       component: blogPostTemplate,
