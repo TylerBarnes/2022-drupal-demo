@@ -18,7 +18,7 @@ function PostCard({ slug, image, title, excerpt, author, category, ...props }) {
     <BlockLink {...props} to={`/blog/${slug}`}>
       {image && (
         <>
-          <GatsbyImage alt={image.alt} image={image.gatsbyImageData} />
+          <GatsbyImage alt={image.alt} image={image} />
           <Space size={3} />
         </>
       )}
@@ -41,7 +41,7 @@ function PostCardSmall({ slug, image, title, category, ...props }) {
     <BlockLink {...props} to={`/blog/${slug}`}>
       {image && (
         <>
-          <GatsbyImage alt={image.alt} image={image.gatsbyImageData} />
+          <GatsbyImage alt={image.alt} image={image} />
           <Space size={3} />
         </>
       )}
