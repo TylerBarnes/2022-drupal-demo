@@ -21,7 +21,7 @@
     "gatsby-plugin-react-helmet": "^5.5.0",
     "gatsby-plugin-sharp": "^4.9.1",
     "gatsby-plugin-vanilla-extract": "^2.0.1",
-    "gatsby-source-drupal": "^5.12.0-alpha-drupal-image-cdn.10",
+    "gatsby-source-drupal": "^5.14.0-alpha-drupal-image-cdn.5",
     "gatsby-source-filesystem": "^4.9.1",
     "gatsby-transformer-sharp": "^4.9.0",
     "is-absolute-url": "^4.0.1",
