@@ -12,15 +12,12 @@ import {
 } from "./ui"
 
 function Benefit(props) {
+  const image = props?.imageFields?.find((field) => field.id === props.id)
+    ?.relationships?.field_image?.relationships?.field_media_image?.gatsbyImage
+
   return (
     <Box as="li" width="third" padding={4} paddingY={3}>
-      {props.image && (
-        <Icon
-          alt={props.image.alt}
-          image={props.image.gatsbyImageData}
-          size="small"
-        />
-      )}
+      {image && <Icon alt={props.image.alt} image={image} size="small" />}
       <Space size={2} />
       <Heading variant="subheadSmall">{props.heading}</Heading>
       <Text>{props.text}</Text>
@@ -39,7 +36,11 @@ export default function BenefitList(props) {
         <Space size={3} />
         <FlexList gutter={3} variant="start" responsive wrap>
           {props.content.map((benefit) => (
-            <Benefit key={benefit.id} {...benefit} />
+            <Benefit
+              key={benefit.id}
+              {...benefit}
+              imageFields={props.relationships.field_content}
+            />
           ))}
         </FlexList>
       </Container>
@@ -48,7 +49,7 @@ export default function BenefitList(props) {
 }
 
 export const query = graphql`
-  fragment HomepageBenefitListContent on HomepageBenefitList {
+  fragment HomepageBenefitListContent on node__homepage_benefit_list {
     id
     heading
     text
@@ -60,6 +61,21 @@ export const query = graphql`
         id
         gatsbyImageData
         alt
+      }
+    }
+
+    relationships {
+      field_content {
+        id
+        relationships {
+          field_image {
+            relationships {
+              field_media_image {
+                gatsbyImage(width: 800)
+              }
+            }
+          }
+        }
       }
     }
   }

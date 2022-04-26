@@ -10,9 +10,6 @@
     "setup": "node ./scripts/setup.js"
   },
   "dependencies": {
-    "gatsby-plugin-react-helmet": "^5.5.0",
-    "gatsby-source-drupal": "^5.6.0",
-    "react-helmet": "^6.1.0",
     "@fontsource/dm-mono": "^4.5.4",
     "@fontsource/dm-sans": "^4.5.3",
     "@vanilla-extract/babel-plugin": "^1.1.4",
@@ -21,22 +18,25 @@
     "@vanilla-extract/webpack-plugin": "^2.1.5",
     "gatsby": "^4.9.3",
     "gatsby-plugin-image": "^2.9.1",
+    "gatsby-plugin-react-helmet": "^5.5.0",
     "gatsby-plugin-sharp": "^4.9.1",
     "gatsby-plugin-vanilla-extract": "^2.0.1",
+    "gatsby-source-drupal": "^5.12.0-alpha-drupal-image-cdn.10",
     "gatsby-source-filesystem": "^4.9.1",
     "gatsby-transformer-sharp": "^4.9.0",
     "is-absolute-url": "^4.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-feather": "^2.0.9",
+    "react-helmet": "^6.1.0",
     "sharp": "^0.30.3"
   },
   "devDependencies": {
     "chalk": "^4.1.0",
-    "inquirer": "^8.2.0",
-    "yargs": "^17.3.1",
-    "prettier": "2.5.1",
     "husky": "^7.0.4",
-    "lint-staged": "^12.3.5"
+    "inquirer": "^8.2.0",
+    "lint-staged": "^12.3.5",
+    "prettier": "2.5.1",
+    "yargs": "^17.3.1"
   }
 }

@@ -3,16 +3,22 @@ import { graphql } from "gatsby"
 import BlogPost from "../templates/blog-post"
 
 export default function BlogPostBase(props) {
-  console.log(props)
   const post = props.data.nodeBlogPost
-  return <BlogPost title={post.title} html={post.field_body.processed}
-  image={post.relationships.field_image}
-  />
+  return (
+    <BlogPost
+      title={post.title}
+      html={post.field_body.processed}
+      image={
+        post.relationships.field_image?.relationships?.field_media_image
+          ?.gatsbyImage
+      }
+    />
+  )
 }
 
 export const query = graphql`
-query aBlogPost($id: String!) {
-  nodeBlogPost(id: {eq: $id}) {
+  query aBlogPost($id: String!) {
+    nodeBlogPost(id: { eq: $id }) {
       id
       title
       field_body {
@@ -26,9 +32,13 @@ query aBlogPost($id: String!) {
           name
         }
         field_image {
-          gatsbyImageData(width: 1152)
+          relationships {
+            field_media_image {
+              gatsbyImage(width: 1152)
+            }
+          }
         }
       }
     }
-}
+  }
 `

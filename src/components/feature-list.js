@@ -23,7 +23,7 @@ export default function FeatureList(props) {
 }
 
 export const query = graphql`
-  fragment HomepageFeatureListContent on HomepageFeatureList {
+  fragment HomepageFeatureListContent on node__homepage_feature_list {
     id
     kicker
     heading

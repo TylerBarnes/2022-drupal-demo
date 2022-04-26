@@ -1,6 +1,6 @@
 import * as React from "react"
 import { graphql } from "gatsby"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import {
   Container,
   Section,
@@ -25,14 +25,20 @@ function Stat(props) {
 }
 
 export default function StatList(props) {
+  const icon =
+    props.relationships?.field_icon?.relationships?.field_media_image
+      ?.gatsbyImage
+
+  const image =
+    props.relationships?.field_image?.relationships?.field_media_image
+      ?.gatsbyImage
+
   return (
     <Container width="fullbleed">
       <Section padding={5} radius="large" background="primary">
         <Flex responsive variant="end">
           <Box width="half">
-            {props.icon && (
-              <Icon alt={props.icon.alt} image={props.icon.gatsbyImageData} />
-            )}
+            {icon && <Icon alt={props.icon.alt} image={icon} />}
             <Heading>
               {props.kicker && <Kicker>{props.kicker}</Kicker>}
               {props.heading}
@@ -48,12 +54,9 @@ export default function StatList(props) {
             <ButtonList links={props.links} reversed />
           </Box>
           <Box width="half">
-            {props.image && (
+            {image && (
               <Nudge right={5} bottom={5}>
-                <GatsbyImage
-                  alt={props.image.alt}
-                  image={getImage(props.image.gatsbyImageData)}
-                />
+                <GatsbyImage alt={props.image.alt} image={image} />
               </Nudge>
             )}
           </Box>
@@ -64,7 +67,7 @@ export default function StatList(props) {
 }
 
 export const query = graphql`
-  fragment HomepageStatListContent on HomepageStatList {
+  fragment HomepageStatListContent on node__homepage_stat_list {
     id
     kicker
     heading
@@ -89,6 +92,23 @@ export const query = graphql`
       id
       href
       text
+    }
+
+    relationships {
+      field_image {
+        relationships {
+          field_media_image {
+            gatsbyImage(width: 800)
+          }
+        }
+      }
+      field_icon {
+        relationships {
+          field_media_image {
+            gatsbyImage(width: 800)
+          }
+        }
+      }
     }
   }
 `

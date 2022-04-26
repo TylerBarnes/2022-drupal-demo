@@ -14,11 +14,12 @@ import {
 } from "./ui"
 
 function Testimonial(props) {
+  const image = props?.imageFields?.find((field) => field.id === props.id)
+    ?.relationships?.field_avatar?.relationships?.field_media_image?.gatsbyImage
+
   return (
     <Flex variant="start">
-      {props.avatar && (
-        <Avatar alt={props.avatar.alt} image={props.avatar.gatsbyImageData} />
-      )}
+      {image && props.avatar && <Avatar alt={props.avatar.alt} image={image} />}
       <Blockquote>
         <Text as="p" variant="lead">
           {props.quote}
@@ -46,7 +47,10 @@ export default function TestimonialList(props) {
         <FlexList gutter={3} variant="start" responsive wrap>
           {props.content.map((testimonial, index) => (
             <Box as="li" key={testimonial.id + index} width="half" padding={3}>
-              <Testimonial {...testimonial} />
+              <Testimonial
+                {...testimonial}
+                imageFields={props.relationships.field_content}
+              />
             </Box>
           ))}
         </FlexList>
@@ -56,7 +60,7 @@ export default function TestimonialList(props) {
 }
 
 export const query = graphql`
-  fragment HomepageTestimonialListContent on HomepageTestimonialList {
+  fragment HomepageTestimonialListContent on node__homepage_testimonial_list {
     id
     kicker
     heading
@@ -68,6 +72,21 @@ export const query = graphql`
         id
         gatsbyImageData
         alt
+      }
+    }
+
+    relationships {
+      field_content {
+        id
+        relationships {
+          field_avatar {
+            relationships {
+              field_media_image {
+                gatsbyImage(width: 800)
+              }
+            }
+          }
+        }
       }
     }
   }

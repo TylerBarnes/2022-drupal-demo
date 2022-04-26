@@ -3,11 +3,12 @@ import { graphql } from "gatsby"
 import { Space, Container, Section, FlexList, Text, Logo } from "./ui"
 
 export function LogoItem(props) {
-  if (!props.image) return null
+  const image = props?.imageFields?.find((field) => field.id === props.id)
+    ?.relationships?.field_image?.relationships?.field_media_image?.gatsbyImage
 
-  return (
-    <Logo alt={props.alt} image={props.image.gatsbyImageData} size="medium" />
-  )
+  if (!props.image || !image) return null
+
+  return <Logo alt={props.alt} image={image} size="medium" />
 }
 
 export default function LogoList(props) {
@@ -25,7 +26,10 @@ export default function LogoList(props) {
             (logo) =>
               logo && (
                 <li key={logo.id}>
-                  <LogoItem {...logo} />
+                  <LogoItem
+                    {...logo}
+                    imageFields={props.relationships.field_logos}
+                  />
                 </li>
               )
           )}
@@ -36,7 +40,7 @@ export default function LogoList(props) {
 }
 
 export const query = graphql`
-  fragment HomepageLogoListContent on HomepageLogoList {
+  fragment HomepageLogoListContent on node__homepage_logo_list {
     id
     text
     logos {
@@ -46,6 +50,21 @@ export const query = graphql`
         id
         gatsbyImageData
         alt
+      }
+    }
+
+    relationships {
+      field_logos {
+        id
+        relationships {
+          field_image {
+            relationships {
+              field_media_image {
+                gatsbyImage(width: 800)
+              }
+            }
+          }
+        }
       }
     }
   }

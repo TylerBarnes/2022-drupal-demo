@@ -59,6 +59,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       return {
         async resolve(source, args, context, info) {
           const imageType = info.schema.getType("ImageSharp")
+          return null
           const fieldMediaImage = context.nodeModel.getNodeById({
             id: source.relationships.field_media_image___NODE,
           })
@@ -369,13 +370,13 @@ exports.createSchemaCustomization = async ({ actions }) => {
 
   // CMS-specific types
   actions.createTypes(/* GraphQL */ `
-    type node__homepage_link implements Node & HomepageLink @dontInfer {
+    type node__homepage_link implements Node & HomepageLink {
       id: ID!
       href: String @proxy(from: "field_href")
       text: String @proxy(from: "title")
     }
 
-    type node__nav_item implements Node & NavItem & HeaderNavItem @dontInfer {
+    type node__nav_item implements Node & NavItem & HeaderNavItem {
       id: ID!
       navItemType: String @navItemType(name: "Link")
       href: String @proxy(from: "field_href")
@@ -385,8 +386,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       description: String @proxy(from: "field_description")
     }
 
-    type node__nav_item_group implements Node & NavItemGroup & HeaderNavItem
-      @dontInfer {
+    type node__nav_item_group implements Node & NavItemGroup & HeaderNavItem {
       id: ID!
       navItemType: String @navItemType(name: "Group")
       name: String @proxy(from: "title")
@@ -415,8 +415,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_links___NODE")
     }
 
-    type node__homepage_feature implements Node & HomepageBlock & HomepageFeature
-      @dontInfer {
+    type node__homepage_feature implements Node & HomepageBlock & HomepageFeature {
       id: ID!
       blocktype: String @blocktype
       heading: String @proxy(from: "title")
@@ -427,8 +426,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       links: [HomepageLink]
         @link(by: "id", from: "relationships.field_links___NODE")
     }
-    type node__homepage_feature_list implements Node & HomepageBlock & HomepageFeatureList
-      @dontInfer {
+    type node__homepage_feature_list implements Node & HomepageBlock & HomepageFeatureList {
       id: ID!
       blocktype: String @blocktype
       kicker: String @proxy(from: "field_kicker")
@@ -438,8 +436,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_content___NODE")
     }
 
-    type node__homepage_cta implements Node & HomepageBlock & HomepageCta
-      @dontInfer {
+    type node__homepage_cta implements Node & HomepageBlock & HomepageCta {
       id: ID!
       blocktype: String @blocktype
       heading: String @proxy(from: "title")
@@ -451,15 +448,14 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_links___NODE")
     }
 
-    type node__homepage_logo implements Node & HomepageLogo @dontInfer {
+    type node__homepage_logo implements Node & HomepageLogo {
       id: ID!
       image: HomepageImage
         @link(by: "id", from: "relationships.field_image___NODE")
       alt: String @proxy(from: "title")
     }
 
-    type node__homepage_logo_list implements Node & HomepageBlock & HomepageLogoList
-      @dontInfer {
+    type node__homepage_logo_list implements Node & HomepageBlock & HomepageLogoList {
       id: ID!
       blocktype: String @blocktype
       name: String @proxy(from: "title")
@@ -468,8 +464,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_logos___NODE")
     }
 
-    type node__homepage_testimonial implements Node & HomepageTestimonial
-      @dontInfer {
+    type node__homepage_testimonial implements Node & HomepageTestimonial {
       id: ID!
       quote: String @proxy(from: "field_quote")
       source: String @proxy(from: "title")
@@ -477,8 +472,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_avatar___NODE")
     }
 
-    type node__homepage_testimonial_list implements Node & HomepageBlock & HomepageTestimonialList
-      @dontInfer {
+    type node__homepage_testimonial_list implements Node & HomepageBlock & HomepageTestimonialList {
       id: ID!
       blocktype: String @blocktype
       kicker: String @proxy(from: "field_kicker")
@@ -487,7 +481,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_content___NODE")
     }
 
-    type node__homepage_benefit implements Node & HomepageBenefit @dontInfer {
+    type node__homepage_benefit implements Node & HomepageBenefit {
       id: ID!
       heading: String @proxy(from: "title")
       text: String @proxy(from: "field_text")
@@ -495,8 +489,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_image___NODE")
     }
 
-    type node__homepage_benefit_list implements Node & HomepageBlock & HomepageBenefitList
-      @dontInfer {
+    type node__homepage_benefit_list implements Node & HomepageBlock & HomepageBenefitList {
       id: ID!
       blocktype: String @blocktype
       heading: String @proxy(from: "field_heading")
@@ -505,8 +498,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_content___NODE")
     }
 
-    type node__homepage_stat implements Node & HomepageBlock & HomepageStat
-      @dontInfer {
+    type node__homepage_stat implements Node & HomepageBlock & HomepageStat {
       id: ID!
       blocktype: String @blocktype
       heading: String @proxy(from: "field_heading")
@@ -514,8 +506,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       value: String @proxy(from: "title")
     }
 
-    type node__homepage_stat_list implements Node & HomepageBlock & HomepageStatList
-      @dontInfer {
+    type node__homepage_stat_list implements Node & HomepageBlock & HomepageStatList {
       id: ID!
       blocktype: String @blocktype
       kicker: String @proxy(from: "field_kicker")
@@ -531,7 +522,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_links___NODE")
     }
 
-    type node__homepage_product implements Node & HomepageProduct @dontInfer {
+    type node__homepage_product implements Node & HomepageProduct {
       id: ID!
       heading: String @proxy(from: "title")
       text: String @proxy(from: "field_text")
@@ -541,8 +532,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_links___NODE")
     }
 
-    type node__homepage_product_list implements Node & HomepageProductList & HomepageBlock
-      @dontInfer {
+    type node__homepage_product_list implements Node & HomepageProductList & HomepageBlock {
       id: ID!
       blocktype: String @blocktype
       heading: String @proxy(from: "title")
@@ -552,7 +542,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_content___NODE")
     }
 
-    type node__homepage implements Node & Homepage @dontInfer {
+    type node__homepage implements Node & Homepage {
       id: ID!
       title: String
       description: String @proxy(from: "field_description")
@@ -565,8 +555,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
 
   // CMS specific types for About page
   actions.createTypes(/* GraphQL */ `
-    type node__about_hero implements Node & AboutHero & HomepageBlock
-      @dontInfer {
+    type node__about_hero implements Node & AboutHero & HomepageBlock {
       id: ID!
       blocktype: String @blocktype
       heading: String @proxy(from: "title")
@@ -575,21 +564,20 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_image___NODE")
     }
 
-    type node__about_stat implements Node & AboutStat @dontInfer {
+    type node__about_stat implements Node & AboutStat {
       id: ID!
       value: String @proxy(from: "title")
       label: String @proxy(from: "field_label")
     }
 
-    type node__about_stat_list implements Node & AboutStatList & HomepageBlock
-      @dontInfer {
+    type node__about_stat_list implements Node & AboutStatList & HomepageBlock {
       id: ID!
       blocktype: String @blocktype
       content: [AboutStat]
         @link(by: "id", from: "relationships.field_content___NODE")
     }
 
-    type node__about_profile implements Node & AboutProfile @dontInfer {
+    type node__about_profile implements Node & AboutProfile {
       id: ID!
       image: HomepageImage
         @link(by: "id", from: "relationships.field_image___NODE")
@@ -597,8 +585,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       jobTitle: String @proxy(from: "field_job_title")
     }
 
-    type node__about_leadership implements Node & AboutLeadership & HomepageBlock
-      @dontInfer {
+    type node__about_leadership implements Node & AboutLeadership & HomepageBlock {
       id: ID!
       blocktype: String @blocktype
       kicker: String @proxy(from: "field_kicker")
@@ -608,8 +595,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_content___NODE")
     }
 
-    type node__about_logo_list implements Node & AboutLogoList & HomepageBlock
-      @dontInfer {
+    type node__about_logo_list implements Node & AboutLogoList & HomepageBlock {
       id: ID!
       blocktype: String @blocktype
       heading: String @proxy(from: "title")
@@ -619,7 +605,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
         @link(by: "id", from: "relationships.field_logos___NODE")
     }
 
-    type node__about_page implements Node & AboutPage @dontInfer {
+    type node__about_page implements Node & AboutPage {
       id: ID!
       title: String
       description: String @proxy(from: "field_description")
@@ -632,21 +618,21 @@ exports.createSchemaCustomization = async ({ actions }) => {
 
   // Layout types
   actions.createTypes(/* GraphQL */ `
-    type node__layout_header implements Node & LayoutHeader @dontInfer {
+    type node__layout_header implements Node & LayoutHeader {
       id: ID!
       navItems: [HeaderNavItem]
         @link(by: "id", from: "relationships.field_nav_items___NODE")
       cta: HomepageLink @link(by: "id", from: "relationships.field_cta___NODE")
     }
 
-    type node__social_link implements Node & SocialLink @dontInfer {
+    type node__social_link implements Node & SocialLink {
       id: ID!
       blocktype: String @blocktype
       username: String! @proxy(from: "field_username")
       service: SocialService! @proxy(from: "title")
     }
 
-    type node__layout_footer implements Node & LayoutFooter @dontInfer {
+    type node__layout_footer implements Node & LayoutFooter {
       id: ID!
       links: [HomepageLink]
         @link(by: "id", from: "relationships.field_links___NODE")
@@ -657,7 +643,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
       copyright: String @proxy(from: "field_copyright")
     }
 
-    type node__layout implements Node & Layout @dontInfer {
+    type node__layout implements Node & Layout {
       id: ID!
       header: LayoutHeader
         @link(by: "id", from: "relationships.field_header___NODE")
@@ -674,7 +660,7 @@ exports.createSchemaCustomization = async ({ actions }) => {
 
   // Page types
   actions.createTypes(/* GraphQL */ `
-    type node__page implements Node & Page @dontInfer {
+    type node__page implements Node & Page {
       id: ID!
       slug: String! @proxy(from: "field_slug")
       title: String
@@ -688,19 +674,23 @@ exports.createSchemaCustomization = async ({ actions }) => {
 }
 
 const blogPostTemplate = require.resolve(`./src/templates/blog-post-base.tsx`)
-exports.createPages = async ({graphql, actions}) => {
-  const {createPage} = actions
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions
 
   const result = await graphql(`
-    {allNodeBlogPost(sort: {fields: [created]}) {
-      nodes {
-        id
-        path { alias }
+    {
+      allNodeBlogPost(sort: { fields: [created] }) {
+        nodes {
+          id
+          path {
+            alias
+          }
+        }
       }
-    }}
+    }
   `)
 
-  result.data.allNodeBlogPost.nodes.forEach(post => {
+  result.data.allNodeBlogPost.nodes.forEach((post) => {
     createPage({
       path: path.join(`/blog/`, post.path.alias),
       component: blogPostTemplate,

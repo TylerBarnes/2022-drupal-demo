@@ -1,6 +1,6 @@
 import * as React from "react"
 import { graphql } from "gatsby"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import {
   Nudge,
   Container,
@@ -12,6 +12,10 @@ import {
 } from "./ui"
 
 export default function HomepageCta(props) {
+  const image =
+    props?.relationships?.field_image?.relationships?.field_media_image
+      ?.gatsbyImage
+
   return (
     <Container width="fullbleed">
       <Section padding={5} radius="large" background="primary">
@@ -23,12 +27,9 @@ export default function HomepageCta(props) {
           {props.text}
         </Text>
         <ButtonList links={props.links} variant="center" reversed />
-        {props.image && (
+        {image && (
           <Nudge left={5} right={5} bottom={5}>
-            <GatsbyImage
-              alt={props.image.alt}
-              image={getImage(props.image.gatsbyImageData)}
-            />
+            <GatsbyImage alt={props.image.alt} image={image} />
           </Nudge>
         )}
       </Section>
@@ -37,7 +38,7 @@ export default function HomepageCta(props) {
 }
 
 export const query = graphql`
-  fragment HomepageCtaContent on HomepageCta {
+  fragment HomepageCtaContent on node__homepage_cta {
     id
     kicker
     heading
@@ -45,12 +46,21 @@ export const query = graphql`
     image {
       alt
       id
-      gatsbyImageData
     }
     links {
       id
       href
       text
+    }
+
+    relationships {
+      field_image {
+        relationships {
+          field_media_image {
+            gatsbyImage(width: 800)
+          }
+        }
+      }
     }
   }
 `

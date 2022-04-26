@@ -17,6 +17,7 @@ module.exports = {
       options: {
         baseUrl: `https://dev-drupalcon-gatsby-demo-2022.pantheonsite.io/`,
         fastBuilds: true,
+        skipFileDownloads: true,
       },
     },
     "gatsby-plugin-sharp",

@@ -20,14 +20,7 @@ export default function Homepage(props) {
 
 export const query = graphql`
   {
-    homepage {
-      id
-      title
-      description
-      image {
-        id
-        url
-      }
+    homepage: nodeHomepage {
       blocks: content {
         id
         blocktype

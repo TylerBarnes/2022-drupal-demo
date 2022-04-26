@@ -14,15 +14,12 @@ import {
 } from "./ui"
 
 function Product(props) {
+  const image = props?.imageFields?.find((field) => field.id === props.id)
+    ?.relationships?.field_image?.relationships?.field_media_image?.gatsbyImage
+
   return (
     <Box center>
-      {props.image && (
-        <Icon
-          alt={props.image.alt}
-          image={props.image.gatsbyImageData}
-          size="large"
-        />
-      )}
+      {image && <Icon alt={props.image.alt} image={image} size="large" />}
       <Subhead>{props.heading}</Subhead>
       <Text>{props.text}</Text>
       <LinkList links={props.links} />
@@ -44,7 +41,10 @@ export default function ProductList(props) {
         <FlexList gap={4} variant="responsive">
           {props.content.map((product) => (
             <li key={product.id}>
-              <Product {...product} />
+              <Product
+                {...product}
+                imageFields={props.relationships.field_content}
+              />
             </li>
           ))}
         </FlexList>
@@ -54,7 +54,7 @@ export default function ProductList(props) {
 }
 
 export const query = graphql`
-  fragment HomepageProductListContent on HomepageProductList {
+  fragment HomepageProductListContent on node__homepage_product_list {
     id
     kicker
     heading
@@ -72,6 +72,21 @@ export const query = graphql`
         id
         href
         text
+      }
+    }
+
+    relationships {
+      field_content {
+        id
+        relationships {
+          field_image {
+            relationships {
+              field_media_image {
+                gatsbyImage(width: 800)
+              }
+            }
+          }
+        }
       }
     }
   }

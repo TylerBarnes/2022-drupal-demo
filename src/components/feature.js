@@ -1,6 +1,6 @@
 import * as React from "react"
 import { graphql } from "gatsby"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 import {
   Container,
   Section,
@@ -13,17 +13,15 @@ import {
 } from "./ui"
 
 export default function Feature(props) {
+  const image =
+    props.relationships.field_image.relationships.field_media_image.gatsbyImage
+
   return (
     <Section padding={4} background="muted">
       <Container>
         <Flex gap={4} variant="responsive">
           <Box width="half" order={props.flip ? 1 : null}>
-            {props.image && (
-              <GatsbyImage
-                alt={props.image.alt}
-                image={getImage(props.image.gatsbyImageData)}
-              />
-            )}
+            {!!image && <GatsbyImage alt={props.image.alt} image={image} />}
           </Box>
           <Box width="half">
             <Subhead>
@@ -40,7 +38,7 @@ export default function Feature(props) {
 }
 
 export const query = graphql`
-  fragment HomepageFeatureContent on HomepageFeature {
+  fragment HomepageFeatureContent on node__homepage_feature {
     id
     kicker
     heading
@@ -52,8 +50,16 @@ export const query = graphql`
     }
     image {
       id
-      gatsbyImageData
       alt
+    }
+    relationships {
+      field_image {
+        relationships {
+          field_media_image {
+            gatsbyImage(width: 800)
+          }
+        }
+      }
     }
   }
 `
